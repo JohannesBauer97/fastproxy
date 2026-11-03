@@ -115,6 +115,8 @@ jobs:
         run: |
           set -euo pipefail
           brew tap JohannesBauer97/tap "$PWD/tap"
+          tap_dir="$(brew --repository JohannesBauer97/tap)"
+          cp tap/Casks/fastproxy.rb "$tap_dir/Casks/fastproxy.rb"
           brew trust --cask JohannesBauer97/tap/fastproxy
           brew audit --cask --strict --online JohannesBauer97/tap/fastproxy
 
