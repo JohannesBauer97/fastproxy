@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/JohannesBauer97/fastproxy/releases/latest"><img src="https://img.shields.io/github/v/release/JohannesBauer97/fastproxy?style=flat-square" alt="Latest release"></a>
-  <a href="https://github.com/JohannesBauer97/fastproxy/actions/workflows/release.yml"><img src="https://github.com/JohannesBauer97/fastproxy/actions/workflows/release.yml/badge.svg?branch=main" alt="Release workflow"></a>
+  <a href="https://github.com/JohannesBauer97/fastproxy/actions/workflows/release.yml"><img src="https://img.shields.io/github/actions/workflow/status/JohannesBauer97/fastproxy/release.yml?style=flat-square" alt="Release workflow"></a>
   <img src="https://img.shields.io/badge/macOS-13%2B%20%C2%B7%20Apple%20Silicon-000000?logo=apple&style=flat-square" alt="macOS 13+ Apple Silicon">
   <img src="https://img.shields.io/badge/Homebrew-available-orange?logo=homebrew&style=flat-square" alt="Homebrew">
   <img src="https://img.shields.io/badge/notarized-Apple-000000?logo=apple&style=flat-square" alt="Notarized by Apple">
