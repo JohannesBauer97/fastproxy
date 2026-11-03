@@ -97,6 +97,22 @@ jobs:
           security list-keychain -d user -s "$keychain"
           rm -f "$certificate"
 
+      - name: Inspect imported certificate
+        if: always()
+        run: |
+          set -euo pipefail
+          keychain="$RUNNER_TEMP/app-signing.keychain-db"
+          if [[ ! -f "$keychain" ]]; then
+            echo "Signing keychain was not created."
+            exit 0
+          fi
+          echo "Certificates in the signing keychain:"
+          security find-certificate -a -Z "$keychain" | grep -E '"(alis|subj|issu)"' || true
+          echo "All code signing identities:"
+          security find-identity -p codesigning "$keychain" || true
+          echo "Valid code signing identities:"
+          security find-identity -v -p codesigning "$keychain" || true
+
       - name: Resolve signing identity
         id: signing
         run: |
