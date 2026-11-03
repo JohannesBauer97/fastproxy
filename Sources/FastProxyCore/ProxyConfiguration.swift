@@ -35,7 +35,7 @@ public struct ProxyConfiguration: Equatable, Sendable {
 
   public static let `default` = ProxyConfiguration(
     listen: "127.0.0.1",
-    port: 3129,
+    port: 3128,
     upstreamProxy: "",
     failoverProxy: nil,
     noProxy: ["localhost", "127.0.0.1", "::1"],
@@ -46,7 +46,7 @@ public struct ProxyConfiguration: Equatable, Sendable {
 
   public init(
     listen: String = "127.0.0.1",
-    port: Int = 3129,
+    port: Int = 3128,
     upstreamProxy: String = "",
     failoverProxy: String? = nil,
     noProxy: [String] = [],
@@ -108,7 +108,7 @@ public struct ProxyConfiguration: Equatable, Sendable {
     let section = file.proxy ?? ProxySection()
     return ProxyConfiguration(
       listen: section.listen ?? "127.0.0.1",
-      port: section.port ?? 3129,
+      port: section.port ?? 3128,
       upstreamProxy: section.upstreamProxy ?? "",
       failoverProxy: section.failoverProxy,
       noProxy: section.noProxy ?? [],

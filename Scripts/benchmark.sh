@@ -9,7 +9,7 @@ if ! command -v hey >/dev/null 2>&1; then
   exit 1
 fi
 
-PORT="${PORT:-3129}"
+PORT="${PORT:-3128}"
 ORIGIN_PORT="${ORIGIN_PORT:-18080}"
 REQUESTS="${REQUESTS:-3000}"
 CONCURRENCY="${CONCURRENCY:-50}"

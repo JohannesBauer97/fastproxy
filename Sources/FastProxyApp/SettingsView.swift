@@ -4,7 +4,7 @@ struct SettingsView: View {
   @ObservedObject var model: AppModel
 
   @State private var listen = "127.0.0.1"
-  @State private var port = "3129"
+  @State private var port = "3128"
   @State private var upstream = ""
   @State private var failover = ""
   @State private var noProxy = ""
@@ -35,7 +35,7 @@ struct SettingsView: View {
       Section("Listener") {
         TextField("Listen address", text: $listen)
         TextField("Port", text: $port)
-        Text("Use 3128 only when the legacy proxy is not occupying it. The default is 3129.")
+        Text("The default port is 3128.")
           .font(.caption)
           .foregroundStyle(.secondary)
       }

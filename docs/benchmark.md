@@ -67,5 +67,5 @@ swift build -c release --product fastproxy-cli
 ```
 
 Then run the same `hey` commands against the native and .NET ports. Keep the two
-proxies on separate ports (for example 3129 and 3130) and use the same upstream and
+proxies on separate ports (for example 3128 and 3129) and use the same upstream and
 `NoProxy` settings.

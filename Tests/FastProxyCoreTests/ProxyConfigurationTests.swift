@@ -7,7 +7,7 @@ final class ProxyConfigurationTests: XCTestCase {
     {
       "Proxy": {
         "Listen": "127.0.0.1",
-        "Port": 3129,
+        "Port": 3128,
         "UpstreamProxy": "proxy.example.com:8080",
         "FailoverProxy": "fallback.example.com:8080",
         "NoProxy": ["localhost", "*.example.com"],
@@ -19,7 +19,7 @@ final class ProxyConfigurationTests: XCTestCase {
     """
     let config = try ProxyConfiguration.decode(from: Data(json.utf8))
     XCTAssertEqual(config.listen, "127.0.0.1")
-    XCTAssertEqual(config.port, 3129)
+    XCTAssertEqual(config.port, 3128)
     XCTAssertEqual(config.upstreamProxy, "proxy.example.com:8080")
     XCTAssertEqual(config.failoverProxy, "fallback.example.com:8080")
     XCTAssertEqual(config.noProxy, ["localhost", "*.example.com"])
@@ -31,7 +31,7 @@ final class ProxyConfigurationTests: XCTestCase {
   func testMissingOptionalValuesUseSafeDefaults() throws {
     let config = try ProxyConfiguration.decode(from: Data("{}".utf8))
     XCTAssertEqual(config.listen, "127.0.0.1")
-    XCTAssertEqual(config.port, 3129)
+    XCTAssertEqual(config.port, 3128)
     XCTAssertEqual(config.upstreamProxy, "")
     XCTAssertNil(config.failoverProxy)
     XCTAssertEqual(config.noProxy, [])
@@ -46,7 +46,7 @@ final class ProxyConfigurationTests: XCTestCase {
     XCTAssertThrowsError(try config.validate())
     config.port = 65536
     XCTAssertThrowsError(try config.validate())
-    config.port = 3129
+    config.port = 3128
     XCTAssertNoThrow(try config.validate())
   }
 

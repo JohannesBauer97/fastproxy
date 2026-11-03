@@ -12,7 +12,7 @@ final class ConfigurationStoreTests: XCTestCase {
     let store = ConfigurationStore(fileURL: fileURL)
     let configuration = try store.loadOrCreate()
 
-    XCTAssertEqual(configuration.port, 3129)
+    XCTAssertEqual(configuration.port, 3128)
     XCTAssertEqual(configuration.upstreamProxy, "")
     XCTAssertEqual(configuration.noProxy, ProxyConfiguration.default.noProxy)
     XCTAssertTrue(FileManager.default.fileExists(atPath: fileURL.path))

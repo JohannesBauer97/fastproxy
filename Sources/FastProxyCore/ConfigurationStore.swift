@@ -32,11 +32,8 @@ public struct ConfigurationStore: Sendable {
     let isDefaultLocation = fileURL.standardizedFileURL == defaultFileURL.standardizedFileURL
 
     if isDefaultLocation, let legacy = (try? importLegacyConfiguration()) ?? nil {
+      // Import the .NET settings unchanged, including its 3128 default.
       configuration = legacy
-      // The legacy service normally owns 3128. Avoid colliding with it on first run.
-      if configuration.port == 3128 {
-        configuration.port = 3129
-      }
     }
     try save(configuration)
     return configuration

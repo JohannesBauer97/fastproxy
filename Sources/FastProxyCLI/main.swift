@@ -96,7 +96,7 @@ private func printUsage() {
     Usage: fastproxy-cli [options]
 
       --config PATH       appsettings.json path (default: Application Support)
-      --port PORT         Listening port (default: 3129)
+      --port PORT         Listening port (default: 3128)
       --listen ADDRESS    Listening address (default: 127.0.0.1)
       --upstream HOST:PORT
                           Primary upstream proxy

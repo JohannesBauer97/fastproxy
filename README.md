@@ -129,9 +129,8 @@ Users install with `brew install --cask JohannesBauer97/tap/fastproxy`.
 
 ## Default port
 
-The default listening port is **3129**, not 3128. This lets the native app run beside
-an existing .NET FastProxy (which commonly owns 3128) while you compare them. Change
-`Proxy.Port` to 3128 once that port is free.
+The default listening port is **3128**, the same default as the .NET FastProxy.
+Change `Proxy.Port` if another service already uses 3128.
 
 ## Configuration
 
@@ -142,10 +141,9 @@ The app reads and writes:
 ```
 
 On first start, if that file does not exist and the legacy file
-`~/.fastproxy/appsettings.json` is present, it is imported. A legacy port of 3128 is
-changed to 3129 on import so the two proxies do not collide. The runtime configuration
-may contain private corporate hostnames; it is stored with mode `0600` and is not part
-of this repository.
+`~/.fastproxy/appsettings.json` is present, it is imported unchanged. The runtime
+configuration may contain private corporate hostnames; it is stored with mode `0600`
+and is not part of this repository.
 
 The schema is the same as the .NET version:
 
@@ -153,7 +151,7 @@ The schema is the same as the .NET version:
 {
   "Proxy": {
     "Listen": "127.0.0.1",
-    "Port": 3129,
+    "Port": 3128,
     "UpstreamProxy": "proxy.example.com:8080",
     "FailoverProxy": "fallback.example.com:8080",
     "NoProxy": [
@@ -177,7 +175,7 @@ The schema is the same as the .NET version:
 | Setting | Default | Description |
 |---|---|---|
 | `Listen` | `127.0.0.1` | Listen address. Keep it on loopback unless you intend to expose the proxy. |
-| `Port` | `3129` | Listen port. |
+| `Port` | `3128` | Listen port. |
 | `UpstreamProxy` | empty | Primary upstream `host:port`. Empty means DIRECT. |
 | `FailoverProxy` | unset | Optional fallback upstream `host:port`. |
 | `NoProxy` | `localhost`, loopback | Direct-connect patterns; exact, suffix, wildcard, and CIDR forms. |
@@ -220,7 +218,7 @@ The app bundle and the Swift package both ship a small CLI that uses the same co
 
 ```bash
 fastproxy-cli --config ~/Library/Application\ Support/FastProxy/appsettings.json
-fastproxy-cli --port 3129 --upstream proxy.example.com:8080 --no-proxy 'localhost,10.*.*.*'
+fastproxy-cli --port 3128 --upstream proxy.example.com:8080 --no-proxy 'localhost,10.*.*.*'
 ```
 
 Useful flags: `--config`, `--port`, `--listen`, `--upstream`, `--failover`,
