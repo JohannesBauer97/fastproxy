@@ -178,7 +178,12 @@ jobs:
             sleep 20
           done
 
-          xcrun stapler validate dist/FastProxy.app
+          # stapler staple already validates the ticket. A separate validate
+          # call can hit the same transient CloudKit error, so do not fail the
+          # release on it; spctl below is the authoritative local check.
+          if ! xcrun stapler validate dist/FastProxy.app; then
+            echo "::warning::stapler validate failed; continuing with spctl."
+          fi
           codesign --verify --deep --strict --verbose=2 dist/FastProxy.app
           spctl --assess --type execute --verbose=4 dist/FastProxy.app
           rm -f "$key" "$notarization_zip"
