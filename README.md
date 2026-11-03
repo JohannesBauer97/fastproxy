@@ -39,6 +39,26 @@ Swift, SwiftUI/AppKit, Network.framework, and the system GSS framework.
 
 ## Install
 
+### Homebrew
+
+```bash
+brew install --cask JohannesBauer97/tap/fastproxy
+```
+
+This installs `FastProxy.app` into `/Applications` and links the bundled
+`fastproxy-cli` into Homebrew's `bin` directory. The cask requires macOS 13 or
+later on Apple Silicon.
+
+Upgrade and uninstall:
+
+```bash
+brew upgrade --cask fastproxy
+brew uninstall --cask fastproxy
+```
+
+Use `brew uninstall --zap --cask fastproxy` to remove configuration and logs as
+well.
+
 ### Prebuilt release
 
 Download the latest `FastProxy-*-macos-arm64.zip` from
@@ -96,6 +116,16 @@ The certificate must be a **Developer ID Application** certificate exported with
 its private key. An **Apple Development** certificate cannot be used for
 notarization. Creating a Developer ID Application certificate requires an active
 Apple Developer Program membership.
+
+Stable releases also update the Homebrew tap in
+[JohannesBauer97/homebrew-tap](https://github.com/JohannesBauer97/homebrew-tap).
+Pre-release tags do not update the tap. The Homebrew workflow expects this
+repository secret:
+
+- `HOMEBREW_TAP_TOKEN` – fine-grained PAT with `Contents: Read and write` on the
+  `homebrew-tap` repository
+
+Users install with `brew install --cask JohannesBauer97/tap/fastproxy`.
 
 ## Default port
 

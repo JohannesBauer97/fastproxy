@@ -23,6 +23,8 @@ jobs:
     name: Build, notarize, and publish macOS app
     runs-on: macos-15
     timeout-minutes: 60
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
     steps:
       - name: Check out source
         uses: actions/checkout@v7
@@ -229,3 +231,15 @@ jobs:
             "$RUNNER_TEMP/AuthKey.p8" \
             "$RUNNER_TEMP/FastProxy-notarization.zip" \
             "$RUNNER_TEMP/developer-id-application.p12"
+
+  homebrew:
+    name: Update Homebrew tap
+    needs: release
+    if: ${{ !contains(needs.release.outputs.tag, '-') }}
+    permissions:
+      contents: read
+    uses: ./.github/workflows/homebrew.yml
+    with:
+      tag: ${{ needs.release.outputs.tag }}
+    secrets:
+      HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}

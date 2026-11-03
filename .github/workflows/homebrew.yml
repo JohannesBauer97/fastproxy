@@ -1,0 +1,135 @@
+name: Homebrew
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: "Stable release tag to publish to the Homebrew tap (e.g. v1.0.1)"
+        required: true
+        type: string
+    secrets:
+      HOMEBREW_TAP_TOKEN:
+        required: true
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Stable release tag to publish to the Homebrew tap (e.g. v1.0.1)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: homebrew-tap
+  cancel-in-progress: false
+
+jobs:
+  update-tap:
+    name: Update Homebrew tap
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Resolve version
+        id: version
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="$RELEASE_TAG"
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::The Homebrew tap only supports stable tags like v1.2.3 (got '$tag')."
+            exit 1
+          fi
+          prerelease="$(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isPrerelease --jq .isPrerelease)"
+          if [[ "$prerelease" == "true" ]]; then
+            echo "::error::Release $tag is a pre-release; the Homebrew tap only tracks stable releases."
+            exit 1
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Validate tap token
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$HOMEBREW_TAP_TOKEN" ]]; then
+            echo "::error::Missing HOMEBREW_TAP_TOKEN repository secret."
+            exit 1
+          fi
+
+      - name: Download release asset
+        id: asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          gh release download "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern 'FastProxy-*-macos-arm64.zip' \
+            --dir dist
+          archive="$(find dist -maxdepth 1 -name 'FastProxy-*-macos-arm64.zip' -print -quit)"
+          if [[ -z "$archive" ]]; then
+            echo "::error::No macOS arm64 release asset found for $RELEASE_TAG."
+            exit 1
+          fi
+          sha256="$(shasum -a 256 "$archive" | awk '{print $1}')"
+          echo "sha256=$sha256" >> "$GITHUB_OUTPUT"
+
+      - name: Check out Homebrew tap
+        uses: actions/checkout@v7
+        with:
+          repository: JohannesBauer97/homebrew-tap
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          ref: main
+          path: tap
+
+      - name: Generate cask
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          SHA256: ${{ steps.asset.outputs.sha256 }}
+        run: |
+          set -euo pipefail
+          mkdir -p tap/Casks
+          sed \
+            -e "s/__VERSION__/${VERSION}/g" \
+            -e "s/__SHA256__/${SHA256}/g" \
+            packaging/homebrew/fastproxy.rb.tmpl > tap/Casks/fastproxy.rb
+          ruby -c tap/Casks/fastproxy.rb
+
+      - name: Audit cask
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: "1"
+          HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          brew tap JohannesBauer97/tap "$PWD/tap"
+          brew trust --cask JohannesBauer97/tap/fastproxy
+          brew audit --cask --strict --online JohannesBauer97/tap/fastproxy
+
+      - name: Commit and push cask
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          cd tap
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Casks/fastproxy.rb
+          if git diff --cached --quiet; then
+            echo "Homebrew cask is already up to date."
+          else
+            git commit -m "fastproxy $VERSION"
+            git push origin HEAD:main
+          fi
