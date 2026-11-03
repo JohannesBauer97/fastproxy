@@ -46,8 +46,8 @@
     <path d="M 362 340 L 532 512 L 362 684" fill="none" stroke="#B8F5EE" stroke-width="76" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
   </g>
   <text x="520" y="280" font-family="Helvetica Neue, Arial, sans-serif" font-size="104" font-weight="700" fill="#F8FAFC" letter-spacing="-3">FastProxy</text>
-  <text x="524" y="342" font-family="Helvetica Neue, Arial, sans-serif" font-size="34" fill="#CCFBF1">A fast, native macOS proxy</text>
-  <text x="524" y="386" font-family="Helvetica Neue, Arial, sans-serif" font-size="34" fill="#5EEAD4">for corporate networks.</text>
+  <text x="524" y="342" font-family="Helvetica Neue, Arial, sans-serif" font-size="34" fill="#CCFBF1">The native macOS alternative</text>
+  <text x="524" y="386" font-family="Helvetica Neue, Arial, sans-serif" font-size="34" fill="#5EEAD4">to the Px proxy.</text>
   <text x="524" y="452" font-family="Helvetica Neue, Arial, sans-serif" font-size="20" fill="#94A3B8" letter-spacing="0.2">Kerberos/SPNEGO · HTTP/HTTPS · Menu bar · Homebrew</text>
   <rect x="524" y="482" width="120" height="4" rx="2" fill="#2DD4BF"/>
   <text x="1180" y="588" font-family="Helvetica Neue, Arial, sans-serif" font-size="18" fill="#64748B" text-anchor="end">github.com/JohannesBauer97/fastproxy</text>

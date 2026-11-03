@@ -9,8 +9,8 @@ public enum ProxyLogLevel: String, Codable, CaseIterable, Sendable {
   case error
   case critical
 
-  public init(dotNetValue: String?) {
-    switch dotNetValue?.lowercased() {
+  public init(configuredValue: String?) {
+    switch configuredValue?.lowercased() {
     case "trace": self = .trace
     case "debug": self = .debug
     case "warning", "warn": self = .warning
@@ -21,8 +21,8 @@ public enum ProxyLogLevel: String, Codable, CaseIterable, Sendable {
   }
 }
 
-/// Mirrors the .NET `ProxyOptions` section so existing appsettings.json files
-/// can be reused unchanged.
+/// Mirrors the FastProxy `ProxyOptions` section so existing appsettings.json
+/// files can be reused unchanged.
 public struct ProxyConfiguration: Equatable, Sendable {
   public var listen: String
   public var port: Int
@@ -114,7 +114,7 @@ public struct ProxyConfiguration: Equatable, Sendable {
       noProxy: section.noProxy ?? [],
       bufferSize: section.bufferSize ?? 8192,
       connectionTimeout: section.connectionTimeout ?? 20,
-      logLevel: ProxyLogLevel(dotNetValue: file.logging?.logLevel?.defaultValue)
+      logLevel: ProxyLogLevel(configuredValue: file.logging?.logLevel?.defaultValue)
     )
   }
 

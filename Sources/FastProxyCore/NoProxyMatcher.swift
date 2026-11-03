@@ -1,6 +1,6 @@
 import Foundation
 
-/// Matches the .NET implementation's exact, suffix, wildcard, and CIDR rules.
+/// Implements exact, suffix, wildcard, and CIDR matching rules.
 public struct NoProxyMatcher: Sendable {
   private struct CIDRRange: Sendable {
     let network: [UInt8]

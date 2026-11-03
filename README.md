@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/hero.png" alt="FastProxy — a fast, native macOS proxy for corporate networks" width="100%">
+  <img src="docs/assets/hero.png?v=2" alt="FastProxy — the native macOS alternative to the Px proxy" width="100%">
 </p>
 
 <p align="center">
@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <strong>A fast, native macOS proxy for corporate networks.</strong><br>
+  <strong>The native macOS alternative to the Px proxy.</strong><br>
   HTTP/HTTPS forwarding, Kerberos/SPNEGO, upstream failover, and a proper menu bar app.
 </p>
 
@@ -46,8 +46,10 @@ proxy.
 
 ## Why FastProxy
 
+- **The native Px alternative.** FastProxy brings the Px proxy workflow to macOS
+  as a signed, notarized menu bar app.
 - **Native by design.** Swift, SwiftUI/AppKit, Network.framework, and the system
-  GSS.framework. No .NET runtime and no bundled third-party proxy engine.
+  GSS.framework. No separate runtime and no bundled third-party proxy engine.
 - **Kerberos-first.** Uses the ticket in your macOS login session. No passwords in
   configuration and no separate credential prompt.
 - **Built for real upstreams.** Primary and failover proxies, DIRECT fallback, and
@@ -290,9 +292,7 @@ opt-in:
 FASTPROXY_GSS_TEST_HOST=proxy.example.com swift test --filter GSSAuthenticatorTests
 ```
 
-Internal benchmark notes are in [docs/benchmark.md](docs/benchmark.md). The .NET
-proxy referenced there was an internal reference build, not a public product; the
-comparison is kept for development reference.
+Internal benchmark notes are in [docs/benchmark.md](docs/benchmark.md).
 
 <details>
 <summary>Repository layout</summary>

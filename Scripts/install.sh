@@ -17,8 +17,8 @@ rm -rf "$DESTINATION"
 cp -R "$SOURCE" "$DESTINATION"
 xattr -dr com.apple.quarantine "$DESTINATION" 2>/dev/null || true
 
-# Match the .NET installer behavior: enable the per-user LaunchAgent so the
-# menu bar app comes back after the next login.
+# Enable the per-user LaunchAgent so the menu bar app comes back after the
+# next login.
 "$DESTINATION/Contents/MacOS/fastproxy-cli" --install-login-item "$DESTINATION" >/dev/null
 open "$DESTINATION"
 

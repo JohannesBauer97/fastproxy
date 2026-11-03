@@ -2,7 +2,7 @@ import XCTest
 @testable import FastProxyCore
 
 final class ProxyConfigurationTests: XCTestCase {
-  func testDecodesDotNetAppSettingsShape() throws {
+  func testDecodesAppSettingsShape() throws {
     let json = """
     {
       "Proxy": {
