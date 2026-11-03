@@ -31,27 +31,38 @@ Swift, SwiftUI/AppKit, Network.framework, and the system GSS framework.
 ## Requirements
 
 - macOS 13 or later
+- Apple Silicon for the prebuilt release; source builds target the host architecture
 - Xcode 15+ or Xcode Command Line Tools for building
 - For an authenticated upstream: a valid Kerberos ticket (`klist`) and network access
   to the Kerberos KDC. The proxy service principal is normally
   `HTTP/<upstream-host>@<REALM>`.
 
-## Build and install
+## Install
+
+### Prebuilt release
+
+Download the latest `FastProxy-*-macos-arm64.zip` from
+[Releases](https://github.com/JohannesBauer97/fastproxy/releases), unzip it, move
+`FastProxy.app` to `~/Applications`, and remove the quarantine attribute:
+
+```bash
+xattr -dr com.apple.quarantine ~/Applications/FastProxy.app
+open ~/Applications/FastProxy.app
+```
+
+Then enable **Launch at Login** from the menu bar.
+
+### From source
 
 ```bash
 # Build the native app bundle in dist/
 make app
 
-# Optional: install to ~/Applications, enable launch at login, and start it
+# Install to ~/Applications, enable launch at login, and start it
 ./Scripts/install.sh
 ```
 
-The app is LSUIElement (menu bar only). Builds are ad-hoc signed for local use. If you
-download a release, the installer removes the quarantine attribute; otherwise run:
-
-```bash
-xattr -dr com.apple.quarantine /path/to/FastProxy.app
-```
+The app is LSUIElement (menu bar only). Local builds are ad-hoc signed.
 
 ## Default port
 
