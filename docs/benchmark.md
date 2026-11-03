@@ -1,5 +1,9 @@
 # Benchmark
 
+> **Internal benchmark notes.** The .NET FastProxy referenced in this document was
+> an internal reference build, never a public product. The comparison is kept for
+> development reference.
+
 Date: 2026-11-03
 
 Machine: Apple Silicon, 14 CPU cores, 48 GB RAM, macOS 27.2

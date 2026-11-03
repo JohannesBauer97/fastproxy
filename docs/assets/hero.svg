@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <title>FastProxy</title>
+  <desc>A fast, native macOS proxy for corporate networks</desc>
+  <defs>
+    <linearGradient id="banner-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#061426"/>
+      <stop offset="0.58" stop-color="#082230"/>
+      <stop offset="1" stop-color="#0A3B46"/>
+    </linearGradient>
+    <radialGradient id="banner-glow" cx="0.72" cy="0.12" r="0.75">
+      <stop offset="0" stop-color="#2DD4BF" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#2DD4BF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="icon-halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#2DD4BF" stop-opacity="0.28"/>
+      <stop offset="0.62" stop-color="#2DD4BF" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#2DD4BF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="icon-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B1B33"/>
+      <stop offset="0.55" stop-color="#0E4F63"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+    <radialGradient id="icon-glow" cx="0.25" cy="0.15" r="0.9">
+      <stop offset="0" stop-color="#67E8F9" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#67E8F9" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="icon-ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A5F3FC" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#2DD4BF" stop-opacity="0.15"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="640" fill="url(#banner-bg)"/>
+  <rect width="1280" height="640" fill="url(#banner-glow)"/>
+  <path d="M 620 560 C 820 480 980 500 1210 350" fill="none" stroke="#2DD4BF" stroke-opacity="0.10" stroke-width="2"/>
+  <path d="M 720 640 C 900 560 1060 590 1280 450" fill="none" stroke="#67E8F9" stroke-opacity="0.07" stroke-width="2"/>
+  <circle cx="1060" cy="110" r="230" fill="none" stroke="#67E8F9" stroke-opacity="0.06" stroke-width="2"/>
+  <circle cx="1180" cy="360" r="110" fill="none" stroke="#2DD4BF" stroke-opacity="0.05" stroke-width="2"/>
+  <circle cx="274" cy="324" r="230" fill="url(#icon-halo)"/>
+  <g transform="translate(90, 140) scale(0.36)">
+    <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#icon-bg)"/>
+    <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#icon-glow)"/>
+    <rect x="101" y="101" width="822" height="822" rx="184" fill="none" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="2"/>
+    <circle cx="512" cy="512" r="280" fill="none" stroke="url(#icon-ring)" stroke-width="12" stroke-opacity="0.55"/>
+    <path d="M 492 340 L 662 512 L 492 684" fill="none" stroke="#FFFFFF" stroke-width="76" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 362 340 L 532 512 L 362 684" fill="none" stroke="#B8F5EE" stroke-width="76" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+  </g>
+  <text x="520" y="280" font-family="Helvetica Neue, Arial, sans-serif" font-size="104" font-weight="700" fill="#F8FAFC" letter-spacing="-3">FastProxy</text>
+  <text x="524" y="342" font-family="Helvetica Neue, Arial, sans-serif" font-size="34" fill="#CCFBF1">A fast, native macOS proxy</text>
+  <text x="524" y="386" font-family="Helvetica Neue, Arial, sans-serif" font-size="34" fill="#5EEAD4">for corporate networks.</text>
+  <text x="524" y="452" font-family="Helvetica Neue, Arial, sans-serif" font-size="20" fill="#94A3B8" letter-spacing="0.2">Kerberos/SPNEGO · HTTP/HTTPS · Menu bar · Homebrew</text>
+  <rect x="524" y="482" width="120" height="4" rx="2" fill="#2DD4BF"/>
+  <text x="1180" y="588" font-family="Helvetica Neue, Arial, sans-serif" font-size="18" fill="#64748B" text-anchor="end">github.com/JohannesBauer97/fastproxy</text>
+</svg>
