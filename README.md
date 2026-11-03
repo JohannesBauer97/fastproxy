@@ -92,6 +92,11 @@ notarization access. The workflow expects these repository secrets:
 - `APPLE_API_ISSUER_ID`
 - `APPLE_API_KEY_P8_BASE64`
 
+The certificate must be a **Developer ID Application** certificate exported with
+its private key. An **Apple Development** certificate cannot be used for
+notarization. Creating a Developer ID Application certificate requires an active
+Apple Developer Program membership.
+
 ## Default port
 
 The default listening port is **3129**, not 3128. This lets the native app run beside

@@ -107,7 +107,7 @@ jobs:
             exit 0
           fi
           echo "Certificates in the signing keychain:"
-          security find-certificate -a -Z "$keychain" | grep -E '"(alis|subj|issu)"' || true
+          security find-certificate -a -Z "$keychain" | grep '"alis"' || true
           echo "All code signing identities:"
           security find-identity -p codesigning "$keychain" || true
           echo "Valid code signing identities:"
@@ -121,7 +121,7 @@ jobs:
             | sed -n 's/.*"\(Developer ID Application:.*\)"/\1/p' \
             | head -n 1)"
           if [[ -z "$identity" ]]; then
-            echo "::error::No Developer ID Application identity found. Check APPLE_CERTIFICATE_P12_BASE64 and APPLE_CERTIFICATE_PASSWORD."
+            echo "::error::No Developer ID Application identity found. The imported certificate must be a 'Developer ID Application' certificate, not an 'Apple Development' certificate. Check APPLE_CERTIFICATE_P12_BASE64 and APPLE_CERTIFICATE_PASSWORD."
             exit 1
           fi
           echo "identity=$identity" >> "$GITHUB_OUTPUT"
