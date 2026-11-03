@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/hero.png?v=3" alt="FastProxy — a fast, native macOS proxy for corporate networks" width="100%">
+  <img src="docs/assets/hero-v3.png" alt="FastProxy — a fast, native macOS proxy for corporate networks" width="100%">
 </p>
 
 <p align="center">
