@@ -42,13 +42,16 @@ Swift, SwiftUI/AppKit, Network.framework, and the system GSS framework.
 ### Prebuilt release
 
 Download the latest `FastProxy-*-macos-arm64.zip` from
-[Releases](https://github.com/JohannesBauer97/fastproxy/releases), unzip it, move
-`FastProxy.app` to `~/Applications`, and remove the quarantine attribute:
+[Releases](https://github.com/JohannesBauer97/fastproxy/releases), unzip it, and
+move `FastProxy.app` to `~/Applications`:
 
 ```bash
-xattr -dr com.apple.quarantine ~/Applications/FastProxy.app
 open ~/Applications/FastProxy.app
 ```
+
+Release builds are signed with a Developer ID and notarized by Apple. If macOS
+still blocks the app, open **System Settings → Privacy & Security** and choose
+**Open Anyway**.
 
 Then enable **Launch at Login** from the menu bar.
 
@@ -63,6 +66,31 @@ make app
 ```
 
 The app is LSUIElement (menu bar only). Local builds are ad-hoc signed.
+
+## Releasing
+
+Pushing a version tag triggers the release workflow, which runs the tests, builds
+the Apple Silicon app bundle, and publishes the zip as a GitHub release:
+
+```bash
+git tag v1.0.1
+git push origin v1.0.1
+```
+
+The tag must look like `v1.2.3` (a pre-release suffix such as `v1.2.3-rc.1` is
+also accepted). You can republish an existing tag from the **Actions** tab via
+**Release → Run workflow**.
+
+Release builds are signed with a Developer ID Application certificate, use the
+hardened runtime, and are notarized and stapled by Apple. The certificate must be
+exported with its private key; the API key is an App Store Connect team key with
+notarization access. The workflow expects these repository secrets:
+
+- `APPLE_CERTIFICATE_P12_BASE64`
+- `APPLE_CERTIFICATE_PASSWORD`
+- `APPLE_API_KEY_ID`
+- `APPLE_API_ISSUER_ID`
+- `APPLE_API_KEY_P8_BASE64`
 
 ## Default port
 

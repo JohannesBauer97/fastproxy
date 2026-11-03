@@ -19,6 +19,13 @@ appsettings.local.json
 !.env.example
 Secrets.plist
 
+# Code signing material
+*.p12
+*.p8
+*.cer
+*.mobileprovision
+*.provisionprofile
+
 # macOS
 .DS_Store
 ._*
