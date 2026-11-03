@@ -1,3 +1,5 @@
+<p align="center"><img src="Resources/AppIcon-1024.png" width="128" alt="FastProxy app icon"></p>
+
 # FastProxy for macOS
 
 FastProxy is a native macOS menu bar forward proxy for HTTP and HTTPS (CONNECT).
