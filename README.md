@@ -27,8 +27,11 @@
 ## Quick start
 
 ```bash
+brew trust --cask JohannesBauer97/tap/fastproxy
 brew install --cask JohannesBauer97/tap/fastproxy
 ```
+
+Homebrew 7 requires trusting casks from third-party taps once before installing.
 
 Open **FastProxy** from `/Applications`. The proxy starts on `127.0.0.1:3128`.
 Set your upstream proxy in **Settings…**, then point your app or shell at the local
@@ -94,8 +97,12 @@ upstream fails, the failover proxy is tried next.
 ### Homebrew (recommended)
 
 ```bash
+brew trust --cask JohannesBauer97/tap/fastproxy
 brew install --cask JohannesBauer97/tap/fastproxy
 ```
+
+Homebrew 7 refuses to load casks from untrusted third-party taps. The
+`brew trust` command only needs to be run once.
 
 This installs `FastProxy.app` into `/Applications` and links the bundled
 `fastproxy-cli` into Homebrew's `bin` directory.
