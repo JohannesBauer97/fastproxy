@@ -168,23 +168,29 @@ final class TunnelHandler: @unchecked Sendable {
     initialUpstreamData: Data,
     bufferSize: Int
   ) async {
-    await withTaskGroup(of: Void.self) { group in
-      group.addTask {
-        await pump(
-          from: client,
-          to: upstream,
-          initialData: initialClientData,
-          bufferSize: bufferSize
-        )
+    await withTaskCancellationHandler {
+      await withTaskGroup(of: Void.self) { group in
+        group.addTask {
+          await pump(
+            from: client,
+            to: upstream,
+            initialData: initialClientData,
+            bufferSize: bufferSize
+          )
+        }
+        group.addTask {
+          await pump(
+            from: upstream,
+            to: client,
+            initialData: initialUpstreamData,
+            bufferSize: bufferSize
+          )
+        }
       }
-      group.addTask {
-        await pump(
-          from: upstream,
-          to: client,
-          initialData: initialUpstreamData,
-          bufferSize: bufferSize
-        )
-      }
+    } onCancel: {
+      // Task cancellation alone does not resume Network.framework's receive callbacks.
+      client.cancel()
+      upstream.cancel()
     }
   }
 
@@ -204,7 +210,10 @@ final class TunnelHandler: @unchecked Sendable {
       }
       try await destination.sendEOF()
     } catch {
-      try? await destination.sendEOF()
+      // Unlike a normal EOF, an I/O failure makes the whole tunnel unusable.
+      // Tear down both sides to unblock the other pump and release its resources.
+      source.cancel()
+      destination.cancel()
     }
   }
 }

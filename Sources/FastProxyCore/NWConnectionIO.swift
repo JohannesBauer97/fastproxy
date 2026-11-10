@@ -60,12 +60,18 @@ final class NWConnectionIO: @unchecked Sendable {
   }
 
   func start(timeout: TimeInterval? = nil) async throws {
-    if let timeout {
-      try await withTimeout(timeout, onTimeout: { self.connection.cancel() }) {
-        try await self.waitUntilReady()
+    do {
+      if let timeout {
+        try await withTimeout(timeout, onTimeout: { self.connection.cancel() }) {
+          try await self.waitUntilReady()
+        }
+      } else {
+        try await waitUntilReady()
       }
-    } else {
-      try await waitUntilReady()
+    } catch {
+      // In particular, .waiting connections keep retrying until explicitly cancelled.
+      connection.cancel()
+      throw error
     }
   }
 
