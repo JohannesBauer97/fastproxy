@@ -30,12 +30,16 @@ final class ConnectionLifecycleTests: XCTestCase {
       XCTAssertNotEqual(error as? ProxyIOError, .timeout)
     }
 
-    let cancelled = expectation(description: "Failed connection is cancelled instead of retrying indefinitely")
-    connection.stateUpdateHandler = { state in
-      if case .cancelled = state { cancelled.fulfill() }
+    // Cancellation may already be queued for start()'s handler. Replacing that
+    // handler here can miss the transition, so observe eventual state on its queue.
+    for _ in 0..<100 {
+      let state = await withCheckedContinuation { continuation in
+        io.queue.async { continuation.resume(returning: connection.state) }
+      }
+      if case .cancelled = state { return }
+      try await Task.sleep(nanoseconds: 10_000_000)
     }
-    if case .cancelled = connection.state { cancelled.fulfill() }
-    await fulfillment(of: [cancelled], timeout: 1)
+    XCTFail("Failed connection must be cancelled instead of retrying indefinitely; state: \(connection.state)")
   }
 
   func testRelayErrorClosesTheOtherDirection() async throws {
