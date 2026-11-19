@@ -25,6 +25,8 @@ public enum ProxyIOError: LocalizedError, Equatable {
 final class NWConnectionIO: @unchecked Sendable {
   let connection: NWConnection
   let queue: DispatchQueue
+  private let readStateLock = NSLock()
+  private var readClosed = false
 
   init(connection: NWConnection, queue: DispatchQueue) {
     self.connection = connection
@@ -134,14 +136,21 @@ final class NWConnectionIO: @unchecked Sendable {
   }
 
   func receive(maximumLength: Int) async throws -> Data? {
+    if isReadClosed {
+      return nil
+    }
     let length = max(1, maximumLength)
     return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Data?, Error>) in
       connection.receive(minimumIncompleteLength: 1, maximumLength: length) { data, _, isComplete, error in
         if let error {
           continuation.resume(throwing: ProxyIOError.connectionFailed(error.localizedDescription))
         } else if let data, !data.isEmpty {
+          // The final data can arrive together with EOF. Receiving again after that
+          // fails with ENODATA, so remember EOF and report it on the next call.
+          if isComplete { self.markReadClosed() }
           continuation.resume(returning: data)
         } else if isComplete {
+          self.markReadClosed()
           continuation.resume(returning: nil)
         } else {
           continuation.resume(returning: Data())
@@ -152,6 +161,18 @@ final class NWConnectionIO: @unchecked Sendable {
 
   func cancel() {
     connection.cancel()
+  }
+
+  private var isReadClosed: Bool {
+    readStateLock.lock()
+    defer { readStateLock.unlock() }
+    return readClosed
+  }
+
+  private func markReadClosed() {
+    readStateLock.lock()
+    readClosed = true
+    readStateLock.unlock()
   }
 
   private func waitUntilReady() async throws {

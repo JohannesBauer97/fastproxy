@@ -112,6 +112,19 @@ final class ConnectionLifecycleTests: XCTestCase {
     await relay.value
   }
 
+  func testEOFDeliveredWithLastDataEndsReceiveCleanly() async throws {
+    let pair = try await makeConnectionPair()
+    try await pair.local.send(Data("payload".utf8))
+    try await pair.local.sendEOF()
+    // Let data and FIN both arrive so Network.framework reports them in one callback.
+    try await Task.sleep(nanoseconds: 200_000_000)
+
+    let data = try await pair.peer.receive(maximumLength: 65536)
+    XCTAssertEqual(data, Data("payload".utf8))
+    let end = try await pair.peer.receive(maximumLength: 65536)
+    XCTAssertNil(end, "Receiving after EOF must report the end of the stream, not an error")
+  }
+
   private func makeConnectionPair() async throws -> (local: NWConnectionIO, peer: NWConnectionIO) {
     let accepted = expectation(description: "Loopback connection accepted")
     let box = AcceptedConnection()
