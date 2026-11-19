@@ -72,7 +72,8 @@ final class TunnelHandler: @unchecked Sendable {
     for attempt in 0..<4 {
       guard let connection = try? await NWConnectionIO.connect(
         to: proxy,
-        timeout: configuration.timeoutInterval
+        timeout: configuration.timeoutInterval,
+        bypassSystemProxy: true
       ) else {
         return nil
       }

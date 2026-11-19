@@ -31,9 +31,30 @@ final class NWConnectionIO: @unchecked Sendable {
     self.queue = queue
   }
 
+  /// Connections to the configured upstream proxies must not go through the system
+  /// proxy settings. Otherwise Network.framework evaluates the system PAC for every
+  /// attempt (including each Negotiate round trip) and leaks a CFNetwork PAC ticket
+  /// per connection. A context with its own proxy configuration overrides the
+  /// system settings; the placeholder proxy only matches a reserved domain, so it is
+  /// never used. DIRECT connections intentionally keep the system settings, because
+  /// the system PAC may still route NoProxy/fallback targets through a proxy.
+  private static let systemProxyBypassContext: NWParameters.PrivacyContext = {
+    let context = NWParameters.PrivacyContext(description: "fastproxy-outbound")
+    if #available(macOS 14.0, *) {
+      var placeholder = Network.ProxyConfiguration(
+        httpCONNECTProxy: NWEndpoint.hostPort(host: "127.0.0.1", port: 9)
+      )
+      placeholder.matchDomains = ["fastproxy.invalid"]
+      placeholder.allowFailover = true
+      context.proxyConfigurations = [placeholder]
+    }
+    return context
+  }()
+
   static func connect(
     to endpoint: HostPort,
     timeout: TimeInterval,
+    bypassSystemProxy: Bool = false,
     queue: DispatchQueue = DispatchQueue(label: "fastproxy.connection")
   ) async throws -> NWConnectionIO {
     let tcpOptions = NWProtocolTCP.Options()
@@ -44,6 +65,9 @@ final class NWConnectionIO: @unchecked Sendable {
 
     let parameters = NWParameters(tls: nil, tcp: tcpOptions)
     parameters.allowLocalEndpointReuse = true
+    if bypassSystemProxy {
+      parameters.setPrivacyContext(Self.systemProxyBypassContext)
+    }
 
     guard let port = NWEndpoint.Port(rawValue: UInt16(endpoint.port)) else {
       throw ProxyIOError.connectionFailed("invalid port \(endpoint.port)")

@@ -134,7 +134,8 @@ final class HTTPForwarder: @unchecked Sendable {
       do {
         upstream = try await NWConnectionIO.connect(
           to: proxy,
-          timeout: configuration.timeoutInterval
+          timeout: configuration.timeoutInterval,
+          bypassSystemProxy: true
         )
       } catch {
         logger.debug("HTTP proxy connect failed for \(proxy): \(error.localizedDescription)")
